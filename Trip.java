@@ -7,6 +7,7 @@ public class Trip {
     private String date;
     private String time;
     private ArrayList<User> users;
+    private ArrayList<User> acceptedUsers;
 
     public Trip(String origin, String destination, String date, String time, ArrayList<User> users) {
         this.destination = destination;
@@ -20,6 +21,7 @@ public class Trip {
 
     private void intialize() {
         this.ID = Double.toString(Math.random() * 100) + date;
+        acceptedUsers = new ArrayList<>();
     }
 
     public String getID() {
@@ -46,6 +48,14 @@ public class Trip {
         return time;
     }
 
+    public ArrayList<User> getAcceptedUsers() {
+        return acceptedUsers;
+    }
+
+    public void addAcceptedUser(User user) {
+        this.acceptedUsers.add(user);
+    }
+
     public void addUsers(ArrayList<User> u) {
         this.getUsers().addAll(u);
     }
@@ -69,7 +79,10 @@ public class Trip {
         System.out.println("Destination: " + this.getDestination());
         System.out.println("Date: " + this.getDate());
         System.out.println("Time: " + this.getTime());
-        System.out.println("Users: " + this.getAllUsers());
+        System.out.println("Members:");
+        for(User u: this.getUsers()) {
+            System.out.println(u.getName() + "(" + u.getID() + ")");
+        }
     }
 
 }

@@ -1,7 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdminHandler implements BaseHandler {
     Scanner sc = new Scanner(System.in);
+    TripsData tripsData = new TripsData();
+    UsersData usersData = new UsersData();
 
     public void showMenu() {
         System.out.println("Enter any one of the following options:");
@@ -30,10 +33,35 @@ public class AdminHandler implements BaseHandler {
             case "L":
                 Main.showMenu();;
                 break;
+            case "B":
+                showBillings();
+                break;
             case "S":
                 scheduleTrips();
                 break;
+            default:
+                System.out.println("Please enter a valid input");
+                showAdminMenu();
+                break;
         }
+    }
+
+    public void showBillings() {
+        ArrayList<Trip> finalTrips = tripsData.getFinalTrips();
+        ArrayList<User> users = usersData.getRegisteredUsers();
+        
+        for(User user: users) {
+            int sum = 0;
+            for(Trip trip: finalTrips) {
+                if(trip.getUsers().contains(user)) {
+                    sum += 1000/trip.getUsers().size();
+                }
+            }
+
+            System.out.println(user.getName() + "(" + user.getID() + ") - " + sum);
+        }
+
+        showAdminMenu();
     }
 
     public void handleInput(String input) {

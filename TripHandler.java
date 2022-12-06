@@ -1,4 +1,3 @@
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,6 +14,7 @@ public class TripHandler {
         System.out.println("Enter any one of the following options:");
         System.out.println("A -> Add a trip");
         System.out.println("V -> View proposed trips");
+        System.out.println("F -> View finalised trips");
         System.out.println("L -> Logout");
 
         String input = sc.nextLine();
@@ -32,11 +32,26 @@ public class TripHandler {
             case "V":
                 viewProposedTrips(user);
                 break;
+            case "F":
+                viewFinalTrips(user);
+                break;
             default:
                 System.out.println("Please enter a valid input");
                 showMenu(user);
                 break;
         }
+    }
+
+    public void viewFinalTrips(User user) {
+        ArrayList<Trip> finalTrips = tripsData.getFinalTrips();
+
+        for(Trip trip: finalTrips) {
+            if(trip.getUsers().contains(user)) {
+                trip.printDetails();
+            }
+        }
+
+        showMenu(user);
     }
 
     public void viewProposedTrips(User user) {
@@ -45,32 +60,40 @@ public class TripHandler {
         for(int i = 0; i<proposedTrips.size(); i++) {
             Trip trip = proposedTrips.get(i);
             if(trip.getUsers().contains(user)) {
-                System.out.println("Source: " + trip.getOrigin());
-                System.out.println("Destination: " + trip.getDestination());
-                System.out.println("Date: " + trip.getDate());
-                System.out.println("Time: " + trip.getTime());
-                System.out.println("Members:");
-                for(User u: trip.getUsers()) {
-                    System.out.print(u.getName() + "(" + u.getID() + ")");
-                }
+                trip.printDetails();
                 System.out.println("Enter A to accept and R to reject the trips");
 
-                handleTripResponse(sc.nextLine());
+                handleTripResponse(sc.nextLine(), trip, user);
             }
         }
         
         showMenu(user);
     }
 
-    public void handleTripResponse(String input) {
+    public void handleTripResponse(String input, Trip trip, User user) {
         switch(input) {
             case "A":
+                acceptTrip(user, trip);
                 break;
             case "R":
+                tripsData.cancelTrip(trip);
                 break;
             default:
                 System.out.println("Please enter valid input");
                 break;
+        }
+    }
+
+    public void acceptTrip(User user, Trip trip) {
+        if(trip.getAcceptedUsers().contains(user)) {
+            System.out.println("Already accepted");
+        } else {
+            trip.addAcceptedUser(user);
+        }
+        
+        if(trip.getUsers().size() == trip.getAcceptedUsers().size()) {
+            tripsData.removeFromProposed(trip);
+            tripsData.addToFinal(trip);
         }
     }
 

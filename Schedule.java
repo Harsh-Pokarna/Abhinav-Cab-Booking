@@ -10,9 +10,6 @@ public class Schedule {
     ArrayList<Trip> finalTrips = new ArrayList<>();
 
     public void scheduleTrips() {
-        for(Trip tx: allTrips) {
-            tx.printDetails();
-        }
 
         // Entering data into hashmap for similar trips
         for(int i = 0; i<allTrips.size(); i++) {
@@ -56,8 +53,7 @@ public class Schedule {
         }
 
         for(Trip t: finalTrips) {
-            System.out.println("Time: " + t.getTime());
-            System.out.println("Users: " + t.getAllUsers());
+            t.printDetails();
         }
 
         //setting proposed trips data

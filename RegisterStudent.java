@@ -31,7 +31,6 @@ public class RegisterStudent {
             System.out.println("You are Registered!!");
             userHandler.showMenu();
         }
-        // System.out.println(data.getRegisteredUsers());
     }
 
 }

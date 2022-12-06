@@ -21,9 +21,10 @@ public class StudentLogin implements Login {
         UserHandler userHandler = new UserHandler();
 
         for(int i = 0; i<ar.size(); i++) {
-            System.out.println(ar.get(i).getID());
             if(ar.get(i).getID().equals(username)) {
                 User u = ar.get(i);
+                Thread t = new Thread(u);
+                t.start();
                 if(u.getPassword().equals(password)) {
                     System.out.println("Login Successful!!");
                     handler.showMenu(u);

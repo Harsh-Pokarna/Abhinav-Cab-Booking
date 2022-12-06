@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Runnable {
     private final String ID; 
     private String name;
     private String password;
@@ -14,11 +14,6 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNo;
 
-        intialize();
-    }
-
-    private void intialize() {
-        this.trips = new ArrayList<Trip>();
     }
 
     public String getPassword() {
@@ -47,6 +42,12 @@ public class User {
 
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
+    }
+
+    @Override
+    public void run() {
+        this.trips = new ArrayList<Trip>();
+        
     }
 
 }
